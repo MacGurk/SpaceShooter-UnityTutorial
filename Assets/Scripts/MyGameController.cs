@@ -13,15 +13,41 @@ public class MyGameController : MonoBehaviour
     public float waveWait;
 
     public Text scoreText;
+    public Text restartText;
+    public Text gameOverText;
+
+    private bool gameOver;
+    private bool restart;
     private int score;
     private AudioSource backgroundMusic;
 
     void Start()
     {
         backgroundMusic = GetComponent<AudioSource>();
+        gameOver = false;
+        restart = false;
+        restartText.text = "";
+        gameOverText.text = "";
         score = 0;
         UpdateScore();
         StartCoroutine(SpawnWaves());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown("m"))
+        {
+            Debug.Log("M pressed");
+            backgroundMusic.mute = !backgroundMusic.mute;
+        }
+
+        if (restart)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Application.LoadLevel(Application.loadedLevel);
+            }
+        }
     }
 
     IEnumerator SpawnWaves()
@@ -37,6 +63,13 @@ public class MyGameController : MonoBehaviour
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveWait);
+
+            if(gameOver)
+            {
+                restartText.text = "Press 'R' for Restart";
+                restart = true;
+                break;
+            }
         }
         
         
@@ -48,17 +81,14 @@ public class MyGameController : MonoBehaviour
         UpdateScore();
     }
 
+    public void GameOver()
+    {
+        gameOverText.text = "Game Over!";
+        gameOver = true;
+    }
+
     void UpdateScore()
     {
         scoreText.text = "Score: " + score;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown("m"))
-        {
-            Debug.Log("M pressed");
-            backgroundMusic.mute = !backgroundMusic.mute;
-        }
     }
 }
