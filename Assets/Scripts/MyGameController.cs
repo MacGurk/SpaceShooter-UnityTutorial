@@ -45,7 +45,11 @@ public class MyGameController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                Application.LoadLevel(Application.loadedLevel);
+                Application.LoadLevel("MainMenu");
+            }
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                Application.LoadLevel("MainMenu");
             }
         }
     }
@@ -66,7 +70,7 @@ public class MyGameController : MonoBehaviour
 
             if(gameOver)
             {
-                restartText.text = "Press 'R' for Restart";
+                restartText.text = "Press 'R' for Restart\nPress 'B' for Main Menu";
                 restart = true;
                 break;
             }
